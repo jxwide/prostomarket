@@ -1,13 +1,5 @@
-import {
-    Column,
-    DataType,
-    ForeignKey,
-    Model,
-    Table,
-} from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
-import { Product } from "../products/products.model";
-import { Cat } from "../cats/cats.model";
 
 interface ImageCreationAttr {
     source: string;

@@ -1,13 +1,14 @@
-import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { CatsModule } from "./cats/cats.module";
-import { ProductsModule } from "./products/products.module";
 import { Cat } from "./cats/cats.model";
 import { Product } from "./products/products.model";
 import { ProductCats } from "./cats/product-cats.model";
-import { ImagesModule } from "./images/images.module";
 import { Image } from "./images/images.model";
+import { CatsModule } from "./cats/cats.module";
+import { ProductsModule } from "./products/products.module";
+import { ImagesModule } from "./images/images.module";
+import { BannersModule } from "./banners/banners.module";
+import { Module } from "@nestjs/common";
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { Image } from "./images/images.model";
         CatsModule,
         ProductsModule,
         ImagesModule,
+        BannersModule,
     ],
 })
 export class AppModule {}

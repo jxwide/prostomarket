@@ -37,11 +37,17 @@ export class Cat extends Model<Cat, CatCreationAttr> {
     @Column({ type: DataType.STRING, defaultValue: "cat" })
     type: string;
 
+    @ApiProperty({
+        example: "3",
+        description: "ID род. категории",
+    })
     @Column({ type: DataType.INTEGER, allowNull: true })
     superCatId: number;
 
-    // [items]
-
+    @ApiProperty({
+        example: "[Product] (array)",
+        description: "Все товары в категории",
+    })
     @BelongsToMany(() => Product, () => ProductCats)
     products: [Product];
 }
