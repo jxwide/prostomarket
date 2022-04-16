@@ -11,5 +11,5 @@ export class CreateCategoryDto {
     readonly type: string;
 
     @ApiProperty({ example: "1", description: "ID род. категории" })
-    readonly superCat: number;
+    readonly superCatId: number;
 }

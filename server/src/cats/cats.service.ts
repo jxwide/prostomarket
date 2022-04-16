@@ -8,11 +8,7 @@ export class CatsService {
     constructor(@InjectModel(Cat) private catRepository: typeof Cat) {}
 
     async createCategory(createCategoryDto: CreateCategoryDto) {
-        const category = await this.catRepository.create(createCategoryDto);
-        if (createCategoryDto.superCat) {
-            await category.$add("subСats", createCategoryDto.superCat);
-        }
-        return category;
+        return this.catRepository.create(createCategoryDto);
     }
 
     async getCategoryByValue(value: string) {
@@ -21,6 +17,10 @@ export class CatsService {
 
     async getCategoryById(id: number) {
         return this.catRepository.findOne({ where: { id } });
+    }
+
+    async getSubCategories(superCatId: number) {
+        return this.catRepository.findAll({ where: { superCatId } });
     }
 
     async getAllCategories() {

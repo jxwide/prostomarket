@@ -8,7 +8,6 @@ import { Product } from "./products/products.model";
 import { ProductCats } from "./cats/product-cats.model";
 import { ImagesModule } from "./images/images.module";
 import { Image } from "./images/images.model";
-import { CatSubCats } from "./cats/cats-cats.model";
 
 @Module({
     imports: [
@@ -23,7 +22,7 @@ import { CatSubCats } from "./cats/cats-cats.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASS,
             database: process.env.POSTGRES_DB,
-            models: [Cat, Product, ProductCats, Image, CatSubCats],
+            models: [Cat, Product, ProductCats, Image],
             autoLoadModels: true,
         }),
         CatsModule,

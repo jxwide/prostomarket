@@ -6,20 +6,11 @@ import { Cat } from "./cats.model";
 import { Product } from "../products/products.model";
 import { ProductCats } from "./product-cats.model";
 import { Image } from "../images/images.model";
-import { CatSubCats } from "./cats-cats.model";
 
 @Module({
     controllers: [CatsController],
     providers: [CatsService],
-    imports: [
-        SequelizeModule.forFeature([
-            Cat,
-            Product,
-            ProductCats,
-            Image,
-            CatSubCats,
-        ]),
-    ],
+    imports: [SequelizeModule.forFeature([Cat, Product, ProductCats, Image])],
     exports: [CatsService],
 })
 export class CatsModule {}

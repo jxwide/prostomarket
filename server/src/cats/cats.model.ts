@@ -9,8 +9,6 @@ import {
 import { Product } from "../products/products.model";
 import { ProductCats } from "./product-cats.model";
 import { ApiProperty } from "@nestjs/swagger";
-import { Image } from "../images/images.model";
-import { CatSubCats } from "./cats-cats.model";
 
 interface CatCreationAttr {
     name: string;
@@ -39,11 +37,11 @@ export class Cat extends Model<Cat, CatCreationAttr> {
     @Column({ type: DataType.STRING, defaultValue: "cat" })
     type: string;
 
+    @Column({ type: DataType.INTEGER, allowNull: true })
+    superCatId: number;
+
     // [items]
 
     @BelongsToMany(() => Product, () => ProductCats)
     products: [Product];
-
-    @BelongsToMany(() => Cat, () => CatSubCats)
-    subСats: [Cat];
 }
