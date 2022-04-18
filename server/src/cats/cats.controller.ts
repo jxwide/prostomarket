@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CatsService } from "./cats.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { Cat } from "./cats.model";
+import { AdminGuard } from "../users/admin.guard";
 
 @ApiTags("Категории")
 @Controller("cats")
@@ -11,6 +12,7 @@ export class CatsController {
 
     @ApiOperation({ summary: "Создание новой категории" })
     @ApiResponse({ status: 200, type: Cat })
+    @UseGuards(AdminGuard)
     @Post()
     create(@Body() createCategoryDto: CreateCategoryDto) {
         return this.catsService.createCategory(createCategoryDto);

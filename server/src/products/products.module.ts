@@ -9,6 +9,7 @@ import { CatsModule } from "../cats/cats.module";
 import { Option } from "../options/options.model";
 import { OptionsModule } from "../options/options.module";
 import { ImagesModule } from "../images/images.module";
+import { UsersModule } from "../users/users.module";
 
 @Module({
     controllers: [ProductsController],
@@ -18,6 +19,7 @@ import { ImagesModule } from "../images/images.module";
         CatsModule,
         OptionsModule,
         ImagesModule,
+        UsersModule,
     ],
     exports: [ProductsService],
 })

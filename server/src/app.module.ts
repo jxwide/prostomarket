@@ -12,6 +12,8 @@ import { Module } from "@nestjs/common";
 import { Banner } from "./banners/banners.model";
 import { OptionsModule } from "./options/options.module";
 import { Option } from "./options/options.model";
+import { UsersModule } from "./users/users.module";
+import { User } from "./users/users.model";
 
 @Module({
     imports: [
@@ -26,7 +28,7 @@ import { Option } from "./options/options.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASS,
             database: process.env.POSTGRES_DB,
-            models: [Cat, Product, ProductCats, Image, Banner, Option],
+            models: [Cat, Product, ProductCats, Image, Banner, Option, User],
             autoLoadModels: true,
         }),
         CatsModule,
@@ -34,6 +36,7 @@ import { Option } from "./options/options.model";
         ImagesModule,
         BannersModule,
         OptionsModule,
+        UsersModule,
     ],
 })
 export class AppModule {}
