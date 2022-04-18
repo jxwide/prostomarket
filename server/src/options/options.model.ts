@@ -37,6 +37,7 @@ export class Option extends Model<Option, OptionCreationAttr> {
     @Column({ type: DataType.STRING, allowNull: false })
     value: string;
 
+    @ApiProperty({ description: "ID продукта" })
     @ForeignKey(() => Product)
     @Column({ type: DataType.INTEGER })
     productId: number;

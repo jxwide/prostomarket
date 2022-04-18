@@ -7,6 +7,8 @@ import { OptionsService } from "../options/options.service";
 import { CreateOptionDto } from "../options/dto/create-option.dto";
 import { AddOptionDto } from "../options/dto/add-option.dto";
 import { AddCategoryDto } from "../cats/dto/add-category.dto";
+import { AddImageDto } from "../images/dto/add-image.dto";
+import { ImagesService } from "../images/images.service";
 
 @Injectable()
 export class ProductsService {
@@ -14,6 +16,7 @@ export class ProductsService {
         @InjectModel(Product) private productRepository: typeof Product,
         private catsService: CatsService,
         private optionsService: OptionsService,
+        private imageService: ImagesService,
     ) {}
 
     async createProduct(createProductDto: CreateProductDto) {
@@ -41,6 +44,19 @@ export class ProductsService {
             });
             const option = await this.optionsService.create({ title, value });
             return product.$add("options", option.id);
+        } catch (e) {
+            return e.message;
+        }
+    }
+
+    async addImageToProduct(addImageDto: AddImageDto) {
+        try {
+            let { productId, source } = addImageDto;
+            const product = await this.productRepository.findOne({
+                where: { id: productId },
+            });
+            const newImage = await this.imageService.create({ source });
+            return product.$add("images", newImage.id);
         } catch (e) {
             return e.message;
         }

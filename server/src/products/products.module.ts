@@ -8,6 +8,7 @@ import { ProductCats } from "../cats/product-cats.model";
 import { CatsModule } from "../cats/cats.module";
 import { Option } from "../options/options.model";
 import { OptionsModule } from "../options/options.module";
+import { ImagesModule } from "../images/images.module";
 
 @Module({
     controllers: [ProductsController],
@@ -16,6 +17,7 @@ import { OptionsModule } from "../options/options.module";
         SequelizeModule.forFeature([Product, Cat, ProductCats, Option]),
         CatsModule,
         OptionsModule,
+        ImagesModule,
     ],
     exports: [ProductsService],
 })

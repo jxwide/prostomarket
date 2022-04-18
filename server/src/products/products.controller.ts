@@ -6,6 +6,7 @@ import { Product } from "./products.model";
 import { CreateOptionDto } from "../options/dto/create-option.dto";
 import { AddOptionDto } from "../options/dto/add-option.dto";
 import { AddCategoryDto } from "../cats/dto/add-category.dto";
+import { AddImageDto } from "../images/dto/add-image.dto";
 
 @ApiTags("Товары")
 @Controller("products")
@@ -45,5 +46,15 @@ export class ProductsController {
     ) {
         const dto = { ...addOptionDto, productId };
         return this.productsService.addOptionToProduct(dto);
+    }
+
+    @ApiOperation({ summary: "Добавление новой картинки к товару" })
+    @Post("/:productId/add/image")
+    addImageToProduct(
+        @Body() addImageDto: AddImageDto,
+        @Param("productId") productId,
+    ) {
+        const dto = { ...addImageDto, productId };
+        return this.productsService.addImageToProduct(dto);
     }
 }

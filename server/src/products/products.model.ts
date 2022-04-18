@@ -43,9 +43,15 @@ export class Product extends Model<Product, ProductCreationAttr> {
 
     // [cats] [images] [options] [reviews]
 
+    @ApiProperty({ description: "Категории" })
     @BelongsToMany(() => Cat, () => ProductCats)
     cats: [Cat];
 
+    @ApiProperty({ description: "Хар-ки" })
     @HasMany(() => Option)
     options: [Option];
+
+    @ApiProperty({ description: "Изображения" })
+    @HasMany(() => Image)
+    images: [Image];
 }

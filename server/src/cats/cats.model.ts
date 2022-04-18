@@ -13,6 +13,7 @@ import { ApiProperty } from "@nestjs/swagger";
 interface CatCreationAttr {
     name: string;
     type: string;
+    image: string;
 }
 
 @Table({ tableName: "categories" })
@@ -36,6 +37,13 @@ export class Cat extends Model<Cat, CatCreationAttr> {
     })
     @Column({ type: DataType.STRING, defaultValue: "cat" })
     type: string;
+
+    @ApiProperty({
+        example: "https://image",
+        description: "Ссылка на изображение",
+    })
+    @Column({ type: DataType.STRING, allowNull: true })
+    image: string;
 
     @ApiProperty({
         example: "3",

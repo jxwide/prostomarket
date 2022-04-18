@@ -1,5 +1,12 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import {
+    Column,
+    DataType,
+    ForeignKey,
+    Model,
+    Table,
+} from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
+import { Product } from "../products/products.model";
 
 interface ImageCreationAttr {
     source: string;
@@ -22,4 +29,8 @@ export class Image extends Model<Image, ImageCreationAttr> {
     })
     @Column({ type: DataType.STRING, allowNull: false })
     source: string;
+
+    @ApiProperty({ description: "ID продукта" })
+    @ForeignKey(() => Product)
+    productId: number;
 }

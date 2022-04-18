@@ -10,6 +10,12 @@ export class CreateCategoryDto {
     })
     readonly type: string;
 
+    @ApiProperty({
+        example: "https://link_to_image.png",
+        description: "Ссылка на изображение",
+    })
+    readonly image: string;
+
     @ApiProperty({ example: "1", description: "ID род. категории" })
     readonly superCatId: number;
 }
