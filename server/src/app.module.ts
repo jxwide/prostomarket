@@ -9,6 +9,9 @@ import { ProductsModule } from "./products/products.module";
 import { ImagesModule } from "./images/images.module";
 import { BannersModule } from "./banners/banners.module";
 import { Module } from "@nestjs/common";
+import { Banner } from "./banners/banners.model";
+import { OptionsModule } from "./options/options.module";
+import { Option } from "./options/options.model";
 
 @Module({
     imports: [
@@ -23,13 +26,14 @@ import { Module } from "@nestjs/common";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASS,
             database: process.env.POSTGRES_DB,
-            models: [Cat, Product, ProductCats, Image],
+            models: [Cat, Product, ProductCats, Image, Banner, Option],
             autoLoadModels: true,
         }),
         CatsModule,
         ProductsModule,
         ImagesModule,
         BannersModule,
+        OptionsModule,
     ],
 })
 export class AppModule {}

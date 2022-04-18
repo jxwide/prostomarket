@@ -10,6 +10,7 @@ import { Cat } from "../cats/cats.model";
 import { ProductCats } from "../cats/product-cats.model";
 import { ApiProperty } from "@nestjs/swagger";
 import { Image } from "../images/images.model";
+import { Option } from "../options/options.model";
 
 interface ProductCreationAttr {
     title: string;
@@ -44,4 +45,7 @@ export class Product extends Model<Product, ProductCreationAttr> {
 
     @BelongsToMany(() => Cat, () => ProductCats)
     cats: [Cat];
+
+    @HasMany(() => Option)
+    options: [Option];
 }
