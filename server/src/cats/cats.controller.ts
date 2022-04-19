@@ -31,4 +31,13 @@ export class CatsController {
     getAllCategories() {
         return this.catsService.getAllCategories();
     }
+
+    @ApiOperation({
+        summary: "Получение всех категорий содержащихся в другой категории",
+    })
+    @ApiResponse({ status: 200, type: [Cat] })
+    @Get("/superCat/:id")
+    getCategoriesBySuperCat(@Param("id") id) {
+        return this.catsService.getCategoriesBySuperCat(id);
+    }
 }

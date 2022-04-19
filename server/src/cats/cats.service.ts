@@ -26,4 +26,11 @@ export class CatsService {
     async getAllCategories() {
         return this.catRepository.findAll({ include: { all: true } });
     }
+
+    async getCategoriesBySuperCat(id: number) {
+        return this.catRepository.findAll({
+            include: { all: true },
+            where: { superCatId: id },
+        });
+    }
 }
