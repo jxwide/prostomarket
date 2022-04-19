@@ -5,12 +5,15 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import * as bcrypt from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { LoginUserDto } from "./dto/login-user.dto";
+import { AddProductToCartDto } from "./dto/add-product-to-cart.dto";
+import { CartService } from "../cart/cart.service";
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectModel(User) private userRepository: typeof User,
         private jwtService: JwtService,
+        private cartService: CartService,
     ) {}
 
     async registration(createUserDto: CreateUserDto) {
@@ -39,5 +42,23 @@ export class UsersService {
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    async addProductToCart(addProductToCartDto: AddProductToCartDto) {
+        try {
+            let { productId } = addProductToCartDto;
+            let cartProd = await this.cartService.create(productId);
+
+            let user = await this.userRepository.findOne({
+                where: { id: addProductToCartDto.userId },
+            });
+            return user.$add("cart", cartProd.id);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async test() {
+        return this.userRepository.findAll({ include: { all: true } });
     }
 }

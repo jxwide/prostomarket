@@ -14,6 +14,8 @@ import { OptionsModule } from "./options/options.module";
 import { Option } from "./options/options.model";
 import { UsersModule } from "./users/users.module";
 import { User } from "./users/users.model";
+import { CartModule } from "./cart/cart.module";
+import { CartProd } from "./cart/cart.model";
 
 @Module({
     imports: [
@@ -28,7 +30,16 @@ import { User } from "./users/users.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASS,
             database: process.env.POSTGRES_DB,
-            models: [Cat, Product, ProductCats, Image, Banner, Option, User],
+            models: [
+                Cat,
+                Product,
+                ProductCats,
+                Image,
+                Banner,
+                Option,
+                User,
+                CartProd,
+            ],
             autoLoadModels: true,
         }),
         CatsModule,
@@ -37,6 +48,7 @@ import { User } from "./users/users.model";
         BannersModule,
         OptionsModule,
         UsersModule,
+        CartModule,
     ],
 })
 export class AppModule {}

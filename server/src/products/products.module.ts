@@ -10,12 +10,19 @@ import { Option } from "../options/options.model";
 import { OptionsModule } from "../options/options.module";
 import { ImagesModule } from "../images/images.module";
 import { UsersModule } from "../users/users.module";
+import { CartProd } from "../cart/cart.model";
 
 @Module({
     controllers: [ProductsController],
     providers: [ProductsService],
     imports: [
-        SequelizeModule.forFeature([Product, Cat, ProductCats, Option]),
+        SequelizeModule.forFeature([
+            Product,
+            Cat,
+            ProductCats,
+            Option,
+            CartProd,
+        ]),
         CatsModule,
         OptionsModule,
         ImagesModule,
