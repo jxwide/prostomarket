@@ -9,6 +9,8 @@ import { AddOptionDto } from "../options/dto/add-option.dto";
 import { AddCategoryDto } from "../cats/dto/add-category.dto";
 import { AddImageDto } from "../images/dto/add-image.dto";
 import { ImagesService } from "../images/images.service";
+import { Op } from "sequelize";
+import { Cat } from "../cats/cats.model";
 
 @Injectable()
 export class ProductsService {
@@ -21,6 +23,16 @@ export class ProductsService {
 
     async createProduct(createProductDto: CreateProductDto) {
         return this.productRepository.create(createProductDto);
+    }
+
+    async getAllProductsFromCategory(catName: string) {
+        return this.productRepository.findAll({
+            include: {
+                model: Cat,
+                as: "cats",
+                where: { name: catName },
+            },
+        });
     }
 
     async addCategoryToProduct(addCategoryDto: AddCategoryDto) {

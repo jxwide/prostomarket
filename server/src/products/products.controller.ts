@@ -22,6 +22,11 @@ export class ProductsController {
         return this.productsService.getAllProducts();
     }
 
+    @Get("/cat/:name")
+    getAllProductsFromCategory(@Param("name") name) {
+        return this.productsService.getAllProductsFromCategory(name);
+    }
+
     @ApiOperation({ summary: "Создание нового товара" })
     @ApiResponse({ status: 200, type: Product })
     @UseGuards(AdminGuard)
@@ -32,7 +37,7 @@ export class ProductsController {
 
     @ApiOperation({ summary: "Добавление новой категории товару" })
     @UseGuards(JwtGuard)
-    @Get("/:productId/add/category")
+    @Post("/:productId/add/category")
     addCategoryToProduct(
         @Body() addCategoryDto: AddCategoryDto,
         @Param("productId") productId,
