@@ -11,6 +11,7 @@ import { AddImageDto } from "../images/dto/add-image.dto";
 import { ImagesService } from "../images/images.service";
 import { Op } from "sequelize";
 import { Cat } from "../cats/cats.model";
+import { Image } from "../images/images.model";
 
 @Injectable()
 export class ProductsService {
@@ -27,11 +28,16 @@ export class ProductsService {
 
     async getAllProductsFromCategory(catName: string) {
         return this.productRepository.findAll({
-            include: {
-                model: Cat,
-                as: "cats",
-                where: { name: catName },
-            },
+            include: [
+                {
+                    model: Cat,
+                    as: "cats",
+                    where: { name: catName },
+                },
+                {
+                    all: true,
+                },
+            ],
         });
     }
 

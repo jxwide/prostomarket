@@ -14,6 +14,7 @@ const SubCategoriesPage: NextPage = ({ cats, superCats, catName }) => {
                     <div className="super-cats">
                         {superCats.map((el) => (
                             <Category
+                                key={el.id}
                                 name={el.name}
                                 href={"/categories/" + el.name}
                             />
@@ -23,6 +24,7 @@ const SubCategoriesPage: NextPage = ({ cats, superCats, catName }) => {
                         <p className="h">{catName}</p>
                         {cats.map((el) => (
                             <Category
+                                key={el.id}
                                 name={el.name}
                                 href={"/category/" + el.name}
                             />

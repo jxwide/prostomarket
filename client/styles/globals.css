@@ -165,3 +165,61 @@ img {
     font-size: 14px;
     cursor: pointer;
 }
+
+.page-list {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.options-list {
+    width: 20%;
+    border-right: 1px solid #E8E8E8;
+}
+
+.goods-list {
+    width: 70%;
+}
+
+.product {
+    border: 1px solid #E8E8E8;
+    padding-right: 40px;
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.product-block {
+    display: flex;
+    width: 70%;
+}
+
+.product-image-in-list {
+    width: 200px;
+    height: 200px;
+}
+
+.product-title {
+    font-size: 20px;
+    color: blue;
+    cursor: pointer;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.small-button {
+    padding: 8px 10px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.product-description {
+    color: #666666;
+    font-size: 14px;
+}

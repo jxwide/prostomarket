@@ -10,9 +10,10 @@ const Banner = () => {
             url: "/banners/superheader",
         }).then((response) => {
             let banners = response.data;
-
-            let rand = Math.floor(Math.random() * banners.length);
-            setBanner(banners[rand]);
+            if (banners.length) {
+                let rand = Math.floor(Math.random() * banners.length);
+                setBanner(banners[rand]);
+            }
         });
     }, []);
 
