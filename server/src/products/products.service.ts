@@ -85,6 +85,9 @@ export class ProductsService {
     }
 
     async getProductById(id: number) {
-        return this.productRepository.findOne({ where: { id } });
+        return this.productRepository.findOne({
+            where: { id },
+            include: { all: true },
+        });
     }
 }

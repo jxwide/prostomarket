@@ -13,7 +13,7 @@ const Header = () => {
             <div className="subheader">
                 <div className="block">
                     <Link href="/">
-                        <h2>
+                        <h2 className="un-margin-top">
                             <span className="span-bg-red">Prosto</span>Маркет
                         </h2>
                     </Link>
@@ -25,7 +25,7 @@ const Header = () => {
 
                 <div className="block">
                     <div className="account-nav">
-                        <Link href="">
+                        <Link href="/me/orders">
                             <div className="nav-link-w-image">
                                 <Image
                                     src={image_orders}
@@ -35,7 +35,7 @@ const Header = () => {
                                 <a>Заказы</a>
                             </div>
                         </Link>
-                        <Link href="">
+                        <Link href="/me/favorite">
                             <div className="nav-link-w-image">
                                 <Image
                                     src={image_favorite}
@@ -45,7 +45,7 @@ const Header = () => {
                                 <a>Избранное</a>
                             </div>
                         </Link>
-                        <Link href="">
+                        <Link href="/me/cart">
                             <div className="nav-link-w-image">
                                 <Image
                                     src={image_cart}
@@ -55,7 +55,7 @@ const Header = () => {
                                 <a>Корзина</a>
                             </div>
                         </Link>
-                        <Link href="">
+                        <Link href="/me">
                             <div className="nav-link-w-image">
                                 <Image
                                     src={image_my}

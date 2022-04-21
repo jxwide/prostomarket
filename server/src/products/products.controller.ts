@@ -22,6 +22,13 @@ export class ProductsController {
         return this.productsService.getAllProducts();
     }
 
+    @ApiOperation({ summary: "Получение товара по ID" })
+    @ApiResponse({ status: 200, type: Product })
+    @Get("/:id")
+    getProductById(@Param("id") id) {
+        return this.productsService.getProductById(id);
+    }
+
     @Get("/cat/:name")
     getAllProductsFromCategory(@Param("name") name) {
         return this.productsService.getAllProductsFromCategory(name);

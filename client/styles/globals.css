@@ -315,3 +315,12 @@ img {
     max-height: 350px;
     max-width: 350px;
 }
+
+.un-margin {
+    margin: 0;
+}
+
+
+.h2 {
+    margin-top: 50px;
+}

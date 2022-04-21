@@ -2,52 +2,58 @@ import type { NextPage } from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import Option from "../../components/Option";
 import ProductImagesView from "../../components/ProductImagesView";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const ProductViewPage: NextPage = () => {
-    const test = [
-        { source: "https://wallpaperaccess.com/full/2096686.jpg" },
-        {
-            source: "https://files.wallpaperpass.com/2019/10/outer%20space%20wallpaper%20002%20-%201000x1000-768x768.jpg",
-        },
-        { source: "https://wallpaperaccess.com/full/2472408.jpg" },
-    ];
+const ProductViewPage: NextPage = ({ product }) => {
+    let [catsString, setCatsString] = useState("");
+    let [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        setCatsString("");
+        let cats = product.cats;
+        cats.map((el) => setCatsString(catsString + " " + el.name));
+
+        setOptions(product.options.slice(0, 4));
+    }, [product]);
 
     return (
         <MainLayout>
             <div className="page">
-                <p className="categories-list">PC, Computers, Lenovo</p>
-                <h2 className="view-product-title">
-                    15.6" Ноутбук Lenovo Legion 515ACH6 (1920x1080, AMD Ryzen 5
-                    3.3 ГГц, RAM 8 ГБ, SSD 512 ГБ, GeForce RTX 3050, Windows 11
-                    Home), 82JW00CGRU, Phantom Blue
-                </h2>
+                <p className="categories-list">{catsString}</p>
+                <h2 className="view-product-title">{product.title}</h2>
                 <div className="product-main-block">
                     <div className="product-images-block">
-                        <ProductImagesView images={test} />
+                        <ProductImagesView images={product.images} />
                     </div>
                     <div className="product-options-block">
                         <p className="bold">Коротко о товаре</p>
                         <div className="product-options">
-                            <Option
-                                title="Экран"
-                                value="15.6 (1920x1080) IPS, 165 Гц"
-                            />
-                            <Option
-                                title="Экран"
-                                value="15.6 (1920x1080) IPS, 165 Гц"
-                            />
-                            <Option
-                                title="Экран"
-                                value="15.6 (1920x1080) IPS, 165 Гц"
-                            />
+                            {options.map((el) => (
+                                <Option
+                                    key={el.id}
+                                    title={el.title}
+                                    value={el.value}
+                                />
+                            ))}
                         </div>
                     </div>
                     <div className="product-price-block">
-                        <p className="price-block-price">100000 ₽</p>
+                        <p className="price-block-price">{product.price} ₽</p>
                         <button className="product-price-cart">
                             Добавить в корзину
                         </button>
                     </div>
+                </div>
+
+                <h2 className="h2">Описание</h2>
+                <p className="un-margin">{product.description}</p>
+
+                <h2 className="h2">Характеристики</h2>
+                <div className="product-options">
+                    {product.options.map((el) => (
+                        <Option key={el.id} title={el.title} value={el.value} />
+                    ))}
                 </div>
             </div>
         </MainLayout>
@@ -55,3 +61,15 @@ const ProductViewPage: NextPage = () => {
 };
 
 export default ProductViewPage;
+
+export async function getServerSideProps(context) {
+    let productId = context.query.productId;
+
+    let product = await axios({
+        url: "/products/" + productId,
+    }).then((response) => response.data);
+
+    return {
+        props: { product },
+    };
+}
