@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const Product = ({ image, title, description, price, id, images }) => {
+const Product = ({ title, description, price, id, images }) => {
     let preview_image = "none_image";
     if (images.length) preview_image = images[0].source;
 
