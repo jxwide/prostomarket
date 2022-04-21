@@ -324,3 +324,29 @@ img {
 .h2 {
     margin-top: 50px;
 }
+
+.normal-input {
+    border: 1px solid rgba(130, 130, 130, 0.55);
+    font-weight: normal;
+    color: rgb(70, 70, 70);
+}
+
+.auth-p {
+    margin-bottom: 5px;
+    color: rgb(70, 70, 70);
+}
+
+.auth-button {
+    border-radius: 0;
+    margin-top: 25px;
+    margin-right: 45px;
+}
+
+.auth-page {
+    width: 20%;
+    margin-top: 100px;
+}
+
+.error-msg {
+    color: crimson;
+}
