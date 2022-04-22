@@ -3,11 +3,15 @@ import MainLayout from "../../components/layouts/MainLayout";
 import Option from "../../components/Option";
 import ProductImagesView from "../../components/ProductImagesView";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import cookies from "next-cookies";
+import { useRouter } from "next/router";
 
-const ProductViewPage: NextPage = ({ product }) => {
+const ProductViewPage: NextPage = ({ product, inCart, jwt }) => {
+    let [incart, setIncart] = useState(Boolean(inCart));
     let [catsString, setCatsString] = useState("");
     let [options, setOptions] = useState([]);
+    let router = useRouter();
 
     useEffect(() => {
         setCatsString("");
@@ -16,6 +20,20 @@ const ProductViewPage: NextPage = ({ product }) => {
 
         setOptions(product.options.slice(0, 4));
     }, [product]);
+
+    useEffect(() => setIncart(inCart), [inCart]);
+
+    const toCartButton = async () => {
+        if (!jwt) return router.push("/me");
+
+        let productId = product.id;
+        await axios({
+            url: "/users/cart/add/product/" + productId,
+            headers: {
+                Authorization: "Bearer " + jwt,
+            },
+        }).then(() => setIncart(true));
+    };
 
     return (
         <MainLayout>
@@ -40,9 +58,19 @@ const ProductViewPage: NextPage = ({ product }) => {
                     </div>
                     <div className="product-price-block">
                         <p className="price-block-price">{product.price} ₽</p>
-                        <button className="product-price-cart">
-                            Добавить в корзину
-                        </button>
+
+                        {incart ? (
+                            <button className="product-price-cart inCart">
+                                Добавлено в корзину
+                            </button>
+                        ) : (
+                            <button
+                                className="product-price-cart"
+                                onClick={toCartButton}
+                            >
+                                Добавить в корзину
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -50,11 +78,19 @@ const ProductViewPage: NextPage = ({ product }) => {
                 <p className="un-margin">{product.description}</p>
 
                 <h2 className="h2">Характеристики</h2>
-                <div className="product-options">
-                    {product.options.map((el) => (
-                        <Option key={el.id} title={el.title} value={el.value} />
-                    ))}
-                </div>
+                {product.options.length > 0 ? (
+                    <div className="product-options">
+                        {product.options.map((el) => (
+                            <Option
+                                key={el.id}
+                                title={el.title}
+                                value={el.value}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p>Характеристик нет</p>
+                )}
             </div>
         </MainLayout>
     );
@@ -64,12 +100,29 @@ export default ProductViewPage;
 
 export async function getServerSideProps(context) {
     let productId = context.query.productId;
+    let cart = [];
+    let cartProducts = [];
+    let inCart = false;
+    const { jwt } = cookies(context);
 
     let product = await axios({
         url: "/products/" + productId,
     }).then((response) => response.data);
 
+    if (jwt) {
+        cart = await axios({
+            url: "/users/cart",
+            headers: {
+                Authorization: "Bearer " + jwt,
+            },
+        }).then((response) => response.data);
+
+        for (let i = 0; i < cart.length; i++) {
+            if (productId == cart[i].productId) inCart = true;
+        }
+    }
+
     return {
-        props: { product },
+        props: { product, inCart, jwt },
     };
 }

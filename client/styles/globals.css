@@ -363,3 +363,8 @@ img {
 .inCart:hover{
     background: #35e001;
 }
+
+.to-pay-button {
+    border-radius: 0;
+    margin-left: 10px;
+}
