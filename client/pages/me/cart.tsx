@@ -19,7 +19,7 @@ const CartPage: NextPage = ({ cart }) => {
     return (
         <MainLayout>
             <div className="page">
-                <h1>Моя корзина: </h1>
+                <h1>Моя корзина ({cart.length}): </h1>
                 {cart.map((el) => (
                     <Product
                         title={el.title}

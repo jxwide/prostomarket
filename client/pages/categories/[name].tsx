@@ -3,6 +3,7 @@ import MainLayout from "../../components/layouts/MainLayout";
 import axios from "axios";
 import Category from "../../components/Category";
 import BackButton from "../../components/BackButton";
+import Link from "next/link";
 
 const SubCategoriesPage: NextPage = ({ cats, superCats, catName }) => {
     return (
@@ -21,7 +22,9 @@ const SubCategoriesPage: NextPage = ({ cats, superCats, catName }) => {
                         ))}
                     </div>
                     <div className="sub-cats">
-                        <p className="h">{catName}</p>
+                        <Link href={"/category/" + catName}>
+                            <p className="h">{catName}</p>
+                        </Link>
                         {cats.map((el) => (
                             <Category
                                 key={el.id}
@@ -52,7 +55,7 @@ export async function getServerSideProps(context) {
         }
     });
 
-    if (context.query.name) {
+    if (context.query.name && context.query.name != "all") {
         let superCat = await axios({
             url: "/cats/" + context.query.name,
         }).then((response) => response.data);

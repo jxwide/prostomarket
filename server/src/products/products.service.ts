@@ -12,6 +12,7 @@ import { ImagesService } from "../images/images.service";
 import { Op } from "sequelize";
 import { Cat } from "../cats/cats.model";
 import { Image } from "../images/images.model";
+import { Option } from "../options/options.model";
 
 @Injectable()
 export class ProductsService {
@@ -89,5 +90,36 @@ export class ProductsService {
             where: { id },
             include: { all: true },
         });
+    }
+
+    async getProductsByOptions(options) {
+        let result = [];
+        for (let i = 0; i < options.length; i++) {
+            let products = await this.productRepository.findAll({
+                include: [
+                    {
+                        model: Option,
+                        as: "options",
+                        where: {
+                            title: options[i].title,
+                            value: {
+                                [Op.like]: options[i].value,
+                            },
+                        },
+                    },
+                    { all: true },
+                ],
+            });
+            result = [...result, ...products];
+        }
+        return result;
+
+        // let x = await this.productRepository.findAll({
+        //     include: {
+        //         all: true,
+        //     },
+        // });
+        // console.log(x);
+        // return x;
     }
 }

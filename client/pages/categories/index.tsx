@@ -1,10 +1,15 @@
 import type { NextPage } from "next";
-import MainLayout from "../../components/layouts/MainLayout";
-import Category from "../../components/Category";
-import axios from "axios";
-import BackButton from "../../components/BackButton";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-const CategoriesPage: NextPage = ({ superCats }) => {
+const CategoriesPage: NextPage = () => {
+    let router = useRouter();
+    useEffect(() => {
+        router.push("/categories/all");
+    }, []);
+
+    return <></>;
+    /*
     return (
         <MainLayout>
             <div className="page">
@@ -25,10 +30,12 @@ const CategoriesPage: NextPage = ({ superCats }) => {
             </div>
         </MainLayout>
     );
+     */
 };
 
 export default CategoriesPage;
 
+/*
 export async function getServerSideProps(context) {
     let superCats = [];
 
@@ -48,3 +55,4 @@ export async function getServerSideProps(context) {
         props: { superCats },
     };
 }
+*/

@@ -34,6 +34,11 @@ export class ProductsController {
         return this.productsService.getAllProductsFromCategory(name);
     }
 
+    @Post("/by/options")
+    getProductsByOptions(@Body() options) {
+        return this.productsService.getProductsByOptions(options);
+    }
+
     @ApiOperation({ summary: "Создание нового товара" })
     @ApiResponse({ status: 200, type: Product })
     @UseGuards(AdminGuard)

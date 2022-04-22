@@ -27,7 +27,9 @@ const Product = ({ title, description, price, id, images, incart }) => {
                 </div>
             </div>
             <div className="price-block">
-                <p className="product-price">{price} ₽</p>
+                <p className="product-price">
+                    <span className="green">{price}</span> ₽
+                </p>
                 {inCart ? (
                     <button className="small-button inCart">
                         Добавлено в корзину

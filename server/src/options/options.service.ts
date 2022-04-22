@@ -10,4 +10,19 @@ export class OptionsService {
     async create(createOptionDto: CreateOptionDto) {
         return this.optionRepository.create(createOptionDto);
     }
+
+    async getAllOptionsNames() {
+        let options = await this.optionRepository.findAll();
+        let optionsNames = [];
+
+        for (let i = 0; i < options.length; i++) {
+            optionsNames.push(options[i]["dataValues"].title);
+        }
+
+        let uniqueArray = optionsNames.filter(function (item, pos) {
+            return optionsNames.indexOf(item) == pos;
+        });
+
+        return uniqueArray;
+    }
 }
