@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
 import Image from "next/image";
 
-const Banner = () => {
+const BigBanner = () => {
     let [banner, setBanner] = useState({ image: "", href: "" });
 
     useEffect(() => {
         axios({
-            url: "/banners/superheader",
+            url: "/banners/bigbanner",
         }).then((response) => {
             let banners = response.data;
             if (banners.length) {
@@ -18,19 +17,13 @@ const Banner = () => {
         });
     }, []);
 
-    console.log("banner", banner);
-
     return (
-        <div className="banner">
-            <Link href={banner.href}>
-                <Image
-                    src={banner.image || "/superheader.png"}
-                    width="1920px"
-                    height="52px"
-                />
-            </Link>
-        </div>
+        <Image
+            src={banner.image || "/bigbanner.png"}
+            width="1440px"
+            height="300px"
+        />
     );
 };
 
-export default Banner;
+export default BigBanner;
