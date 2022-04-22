@@ -2,9 +2,10 @@ import type { NextPage } from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import Product from "../../components/Product";
 import axios from "axios";
+import cookies from "next-cookies";
 
-const CategoryPage: NextPage = ({ categoryName, products }) => {
-    console.log(products);
+const CategoryPage: NextPage = ({ categoryName, products, cartProducts }) => {
+    console.log(cartProducts);
 
     return (
         <MainLayout>
@@ -15,7 +16,7 @@ const CategoryPage: NextPage = ({ categoryName, products }) => {
                         <p>Хар-ки</p>
                     </div>
                     <div className="goods-list">
-                        {products.map((el) => (
+                        {products.map((el, i) => (
                             <Product
                                 id={el.id}
                                 key={el.id}
@@ -23,9 +24,9 @@ const CategoryPage: NextPage = ({ categoryName, products }) => {
                                 description={el.description}
                                 price={el.price}
                                 images={el.images}
+                                incart={cartProducts[i] == el.id}
                             />
                         ))}
-                        {/*<Product image, title, description, price, id/>*/}
                     </div>
                 </div>
             </div>
@@ -37,13 +38,29 @@ export default CategoryPage;
 
 export async function getServerSideProps(context) {
     let products = [];
+    let cart = [];
+    let cartProducts = [];
     let categoryName = context.query.categoryName;
+    const { jwt } = cookies(context);
 
     products = await axios({
         url: "/products/cat/" + categoryName,
     }).then((response) => response.data);
 
+    if (jwt) {
+        cart = await axios({
+            url: "/users/cart",
+            headers: {
+                Authorization: "Bearer " + jwt,
+            },
+        }).then((response) => response.data);
+
+        for (let i = 0; i < cart.length; i++) {
+            cartProducts.push(cart[i].productId);
+        }
+    }
+
     return {
-        props: { categoryName, products },
+        props: { categoryName, products, cartProducts },
     };
 }

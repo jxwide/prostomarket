@@ -1,7 +1,10 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const Product = ({ title, description, price, id, images }) => {
+const Product = ({ title, description, price, id, images, incart }) => {
+    let [inCart, setInCart] = useState(false);
+    useEffect(() => setInCart(incart), [incart]);
+
     let preview_image = "none_image";
     if (images.length) preview_image = images[0].source;
 
@@ -25,7 +28,13 @@ const Product = ({ title, description, price, id, images }) => {
             </div>
             <div className="price-block">
                 <p className="product-price">{price} ₽</p>
-                <button className="small-button">В корзину</button>
+                {inCart ? (
+                    <button className="small-button inCart">
+                        Добавлено в корзину
+                    </button>
+                ) : (
+                    <button className="small-button">В корзину</button>
+                )}
             </div>
         </div>
     );

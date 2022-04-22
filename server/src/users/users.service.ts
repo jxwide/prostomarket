@@ -63,6 +63,18 @@ export class UsersService {
         }
     }
 
+    async getUserCart(id: number) {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { id },
+                include: { all: true },
+            });
+            return user["dataValues"].cart;
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     async test() {
         return this.userRepository.findAll({ include: { all: true } });
     }

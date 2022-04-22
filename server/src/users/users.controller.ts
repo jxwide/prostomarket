@@ -40,6 +40,12 @@ export class UsersController {
         return this.usersService.addProductToCart({ productId, userId });
     }
 
+    @UseGuards(JwtGuard)
+    @Get("/cart")
+    getUserCart(@UsersDecorator("id") userId) {
+        return this.usersService.getUserCart(parseInt(userId));
+    }
+
     @Get("/users")
     test() {
         return this.usersService.test();
