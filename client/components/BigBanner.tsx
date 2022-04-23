@@ -19,7 +19,7 @@ const BigBanner = () => {
 
     return (
         <Image
-            src={banner.image || "/bigbanner.png"}
+            src={banner.image || "/green.png"}
             width="1440px"
             height="300px"
         />

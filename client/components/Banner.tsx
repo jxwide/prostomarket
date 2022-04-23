@@ -24,7 +24,7 @@ const Banner = () => {
         <div className="banner">
             <Link href={banner.href}>
                 <Image
-                    src={banner.image || "/superheader.png"}
+                    src={banner.image || "/green.png"}
                     width="1920px"
                     height="52px"
                 />

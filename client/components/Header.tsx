@@ -13,7 +13,7 @@ const Header = () => {
             <div className="subheader">
                 <div className="block">
                     <Link href="/">
-                        <h2 className="un-margin-top">
+                        <h2 className="un-margin-top pointer">
                             <span className="span-bg-red">Prosto</span>Маркет
                         </h2>
                     </Link>

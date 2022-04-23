@@ -457,7 +457,7 @@ img {
 
     margin-right: 20px;
 
-    background: black;
+    cursor: pointer;
 }
 
 .right-banners {
@@ -473,4 +473,50 @@ img {
     margin-bottom: 20px;
 
     background: black;
+
+    cursor: pointer;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.margin-top {
+    margin-top: 40px;
+}
+
+.index-cat-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.index-category {
+    cursor: pointer;
+
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+
+    padding: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(173, 173, 173, 0.41);
+    border-radius: 15px;
+
+    flex-direction: column;
+    transition: .2s;
+}
+
+.index-category:hover {
+    border: 1px solid rgba(0, 112, 255, 0.55);
+}
+
+.index-cat-name {
+    margin: 5px 0 0 0;
+    z-index: 1;
+    color: rgb(109, 109, 109);
 }
