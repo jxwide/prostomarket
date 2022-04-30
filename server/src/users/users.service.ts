@@ -27,7 +27,7 @@ export class UsersService {
             const hash = await bcrypt.hash(password, 3);
             let payload = { ...createUserDto, password: hash };
             const user = await this.userRepository.create(payload);
-            return this.jwtService.sign(payload);
+            return this.jwtService.sign(user["dataValues"]);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }

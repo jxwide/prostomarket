@@ -43,6 +43,7 @@ const SingupPage: NextPage = ({ authed }) => {
 
         setEmail("");
         setPass("");
+        setPass2("")
     };
 
     return (
@@ -61,7 +62,7 @@ const SingupPage: NextPage = ({ authed }) => {
 
                     <p className="auth-p">Пароль</p>
                     <input
-                        type="text"
+                        type="password"
                         className="normal-input"
                         value={pass}
                         onChange={(e) => setPass(e.target.value)}
@@ -69,7 +70,7 @@ const SingupPage: NextPage = ({ authed }) => {
 
                     <p className="auth-p">Повторите пароль</p>
                     <input
-                        type="text"
+                        type="password"
                         className="normal-input"
                         value={pass2}
                         onChange={(e) => setPass2(e.target.value)}

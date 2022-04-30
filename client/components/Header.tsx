@@ -1,13 +1,26 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import Image from "next/image";
 import image_orders from "../public/orders.svg";
 import image_favorite from "../public/favorite.svg";
 import image_cart from "../public/cart.svg";
 import image_my from "../public/account.svg";
+import axios from "axios";
 
 const Header = () => {
+    let [cats, setCats] = useState([]);
+
+    useEffect(() => {
+        axios({
+            url: "/cats",
+        }).then((response) => {
+            let cats = response.data;
+            cats.sort(() => Math.random() - 0.5); // shuffle categories
+            setCats(cats);
+        });
+    }, []);
+
     return (
         <div className="header">
             <div className="subheader">
@@ -67,6 +80,14 @@ const Header = () => {
                         </Link>
                     </div>
                 </div>
+            </div>
+
+            <div className="cats-header">
+                {cats.map((el) => (
+                    <Link href={"/category/" + el.name} key={el.id}>
+                        <a className="cats-header-link">{el.name}</a>
+                    </Link>
+                ))}
             </div>
         </div>
     );

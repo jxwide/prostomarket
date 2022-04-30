@@ -24,6 +24,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .subheader {
@@ -32,6 +33,20 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.cats-header {
+    width: 50%;
+    max-width: 50%;
+    overflow: hidden;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.cats-header-link {
+    font-size: 14px;
+    margin-right: 15px;
 }
 
 .span-bg-red {

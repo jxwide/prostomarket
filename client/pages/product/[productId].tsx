@@ -103,7 +103,7 @@ export async function getServerSideProps(context) {
     let cart = [];
     let cartProducts = [];
     let inCart = false;
-    const { jwt } = cookies(context);
+    let { jwt } = cookies(context);
 
     let product = await axios({
         url: "/products/" + productId,
@@ -120,7 +120,7 @@ export async function getServerSideProps(context) {
         for (let i = 0; i < cart.length; i++) {
             if (productId == cart[i].productId) inCart = true;
         }
-    }
+    } else jwt = "";
 
     return {
         props: { product, inCart, jwt },

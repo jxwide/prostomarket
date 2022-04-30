@@ -60,7 +60,7 @@ const LoginPage: NextPage = ({ authed }) => {
 
                     <p className="auth-p">Пароль</p>
                     <input
-                        type="text"
+                        type="password"
                         className="normal-input"
                         value={pass}
                         onChange={(e) => setPass(e.target.value)}

@@ -5,13 +5,13 @@ import axios from "axios";
 import cookies from "next-cookies";
 import BackButton from "../../components/BackButton";
 import React, { useEffect, useState } from "react";
-import Option from "../../components/Option";
 
 const CategoryPage: NextPage = ({
     categoryName,
     products,
     cartProducts,
     allOptions,
+    jwt
 }) => {
     let [allProducts, setAllProducts] = useState([]);
     let [optionsList, setOptionsList] = useState([]);
@@ -107,6 +107,7 @@ const CategoryPage: NextPage = ({
                                 price={el.price}
                                 images={el.images}
                                 incart={cartProducts[i] == el.id}
+                                jwt={jwt}
                             />
                         ))}
                     </div>
@@ -124,7 +125,7 @@ export async function getServerSideProps(context) {
     let cartProducts = [];
     let allOptions = [];
     let categoryName = context.query.categoryName;
-    const { jwt } = cookies(context);
+    let { jwt } = cookies(context);
 
     products = await axios({
         url: "/products/cat/" + categoryName,
@@ -141,7 +142,7 @@ export async function getServerSideProps(context) {
         for (let i = 0; i < cart.length; i++) {
             cartProducts.push(cart[i].productId);
         }
-    }
+    } else jwt = ''
 
     allOptions = await axios({
         url: "/options",
@@ -152,6 +153,6 @@ export async function getServerSideProps(context) {
     console.log(allOptions);
 
     return {
-        props: { categoryName, products, cartProducts, allOptions },
+        props: { categoryName, products, cartProducts, allOptions, jwt },
     };
 }

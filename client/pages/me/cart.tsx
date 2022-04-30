@@ -4,11 +4,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import cookies from "next-cookies";
 import Product from "../../components/Product";
+import { useRouter } from "next/router";
 
-const CartPage: NextPage = ({ cart }) => {
+const CartPage: NextPage = ({ cart, jwt }) => {
     let [fullPrice, setFullPrice] = useState(0);
 
+    const router = useRouter();
     useEffect(() => {
+        if (jwt == "") router.push("/me");
+
         let price = 0;
         for (let i = 0; i < cart.length; i++) {
             price += cart[i].price;
@@ -48,7 +52,7 @@ export default CartPage;
 export async function getServerSideProps(context) {
     let cart = [];
     let products = [];
-    const { jwt } = cookies(context);
+    let { jwt } = cookies(context);
 
     if (jwt) {
         cart = await axios({
@@ -57,7 +61,7 @@ export async function getServerSideProps(context) {
                 Authorization: "Bearer " + jwt,
             },
         }).then((response) => response.data);
-    }
+    } else jwt = "";
 
     for (let i = 0; i < cart.length; i++) {
         let prod = await axios({
@@ -68,6 +72,6 @@ export async function getServerSideProps(context) {
     }
 
     return {
-        props: { cart: products },
+        props: { cart: products, jwt },
     };
 }
