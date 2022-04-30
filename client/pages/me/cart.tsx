@@ -29,6 +29,7 @@ const CartPage: NextPage = ({ cart, jwt }) => {
                         title={el.title}
                         description={el.description}
                         price={el.price}
+                        oldprice={el.oldprice}
                         id={el.id}
                         key={el.id}
                         images={el.images}

@@ -3,16 +3,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-const Product = ({ title, description, price, id, images, incart, jwt }) => {
+const Product = ({ title, description, price, oldprice, id, images, incart, jwt }) => {
     let [inCart, setInCart] = useState(false);
-    let router = useRouter()
+    let router = useRouter();
     useEffect(() => setInCart(incart), [incart]);
 
     let preview_image = "none_image";
     if (images.length) preview_image = images[0].source;
 
     const toCartButton = async () => {
-        if (jwt == '') return router.push("/me");
+        if (jwt == "") return router.push("/me");
 
         await axios({
             url: "/users/cart/add/product/" + id,
@@ -42,7 +42,15 @@ const Product = ({ title, description, price, id, images, incart, jwt }) => {
             </div>
             <div className="price-block">
                 <p className="product-price">
-                    <span className="green">{price}</span> ₽
+                    {
+                        oldprice == 0 ?
+                            null :
+                            <span className="old-price">
+                                <span className="old-price-price">{oldprice.toLocaleString()} ₽</span>
+                                <span className="sale">-{Math.floor((price / oldprice) * 100)}%</span>
+                            </span>
+                    }
+                    <span className="new-price">{price.toLocaleString()} ₽</span>
                 </p>
                 {inCart ? (
                     <button className="small-button inCart">

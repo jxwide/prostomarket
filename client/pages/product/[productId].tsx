@@ -57,7 +57,17 @@ const ProductViewPage: NextPage = ({ product, inCart, jwt }) => {
                         </div>
                     </div>
                     <div className="product-price-block">
-                        <p className="price-block-price">{product.price} ₽</p>
+                        <p className="product-price view-product-price">
+                            {
+                                product.oldprice == 0 ?
+                                    null :
+                                    <span className="old-price">
+                                <span className="old-price-price">{product.oldprice.toLocaleString()} ₽</span>
+                                <span className="sale">-{Math.floor((product.price / product.oldprice) * 100)}%</span>
+                            </span>
+                            }
+                            <span className="new-price">{product.price.toLocaleString()} ₽</span>
+                        </p>
 
                         {incart ? (
                             <button className="product-price-cart inCart">

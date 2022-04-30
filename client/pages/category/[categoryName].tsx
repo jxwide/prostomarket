@@ -105,6 +105,7 @@ const CategoryPage: NextPage = ({
                                 title={el.title}
                                 description={el.description}
                                 price={el.price}
+                                oldprice={el.oldprice}
                                 images={el.images}
                                 incart={cartProducts[i] == el.id}
                                 jwt={jwt}
