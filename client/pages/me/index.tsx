@@ -5,12 +5,15 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { removeCookies } from "cookies-next";
+import Link from "next/link";
 
 const MePage: NextPage = ({ authed, user }) => {
     let router = useRouter();
 
     useEffect(() => {
         if (!authed) router.push("/me/singup");
+
+        console.log('us', user)
     }, [authed]);
 
     return (
@@ -18,6 +21,14 @@ const MePage: NextPage = ({ authed, user }) => {
             <div className="page">
                 <h1>Аккаунт</h1>
                 <h2>{user.email}</h2>
+                <h4>{user.admin ? 'Администратор' : null}</h4>
+                <h4>
+                    {user.seller ?
+                        <Link href='/seller'>
+                            Продавец
+                        </Link>
+                        : null}
+                </h4>
                 <a href="" onClick={() => removeCookies("jwt")}>
                     Выйти
                 </a>

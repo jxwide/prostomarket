@@ -1,6 +1,7 @@
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
 import { CartProd } from "../cart/cart.model";
+import { Product } from "../products/products.model";
 
 interface UserCreationAttr {
     email: string;
@@ -31,12 +32,21 @@ export class User extends Model<User, UserCreationAttr> {
     @Column({ type: DataType.STRING, allowNull: false })
     password: string;
 
+    @ApiProperty({ example: "false", description: "seller ? true : false" })
+    @Column({ type: DataType.BOOLEAN, defaultValue: false })
+    seller: boolean;
+
     @ApiProperty({ example: "false", description: "admin ? true : false" })
     @Column({ type: DataType.BOOLEAN, defaultValue: false })
     admin: boolean;
 
     // [cart] [orders] [wishlist]
 
+    @ApiProperty({ description: "Корзина пользователя" })
     @HasMany(() => CartProd)
     cart: [CartProd];
+
+    @ApiProperty({ description: "Товары, продавцом которых является пользователь" })
+    @HasMany(() => Product)
+    products: [Product]
 }

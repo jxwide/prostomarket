@@ -7,7 +7,7 @@ import {
 import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class SellerGuard implements CanActivate {
     constructor(private jwtService: JwtService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -25,7 +25,7 @@ export class AdminGuard implements CanActivate {
 
             let verify = await this.jwtService.verify(token);
             req.user = verify;
-            if (verify.admin) {
+            if (verify.seller) {
                 return true;
             } else throw new UnauthorizedException({ message: "Нет доступа" });
         } catch (e) {

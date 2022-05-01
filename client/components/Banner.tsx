@@ -18,8 +18,6 @@ const Banner = () => {
         });
     }, []);
 
-    console.log("banner", banner);
-
     return (
         <div className="banner">
             <Link href={banner.href}>

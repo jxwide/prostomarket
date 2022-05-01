@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 import { SequelizeModule } from "@nestjs/sequelize";
@@ -16,8 +16,8 @@ import { CartModule } from "../cart/cart.module";
             secret: process.env.JWT_SECRET_KEY || "1236zxc17",
             signOptions: { expiresIn: "24h" },
         }),
-        CartModule,
+        CartModule
     ],
-    exports: [UsersService, JwtModule],
+    exports: [JwtModule, UsersService],
 })
 export class UsersModule {}

@@ -122,7 +122,6 @@ export default CategoryPage;
 
 export async function getServerSideProps(context) {
     let products = [];
-    let cart = [];
     let cartProducts = [];
     let allOptions = [];
     let categoryName = context.query.categoryName;
@@ -133,7 +132,7 @@ export async function getServerSideProps(context) {
     }).then((response) => response.data);
 
     if (jwt) {
-        cart = await axios({
+        let cart = await axios({
             url: "/users/cart",
             headers: {
                 Authorization: "Bearer " + jwt,
@@ -150,8 +149,6 @@ export async function getServerSideProps(context) {
     })
         .then((response) => response.data)
         .catch(() => (allOptions = []));
-
-    console.log(allOptions);
 
     return {
         props: { categoryName, products, cartProducts, allOptions, jwt },

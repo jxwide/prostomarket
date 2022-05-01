@@ -56,8 +56,8 @@ a {
 button {
     border: none;
     border-radius: 5px;
-    background-color: #F5C400;
-    color: black;
+    background-color: #ffce00;
+    color: #202020;
     outline: none;
     padding: 12px 18px;
     font-weight: bold;
@@ -315,8 +315,17 @@ img {
 .small-button {
     padding: 8px 10px;
     font-size: 14px;
-    font-weight: normal;
     margin-right: 0;
+
+    background: transparent;
+    border-bottom: 3px solid #F5C400;
+    font-weight: 500;
+}
+
+.small-button:hover{
+    border-radius: 0;
+    border-bottom: none;
+    background: #ffce00;
 }
 
 .product-description {
@@ -569,4 +578,52 @@ img {
     margin: 5px 0 0 0;
     z-index: 1;
     color: rgb(109, 109, 109);
+}
+
+.query-page {
+    display: flex;
+    justify-content: space-between;
+}
+
+h4 {
+    background: #e0b501;
+    width: min-content;
+}
+
+.for-sellers-text {
+    background: #35e001;
+    margin-left: 15px;
+}
+
+.td {
+    color: #272727;
+    width: 150px;
+    padding: 10px;
+}
+
+.td-up {
+    color: #595959;
+}
+
+.tr {
+    display: flex;
+}
+
+.table {
+    font-size: 14px;
+}
+
+.product-change {
+    width: 50%;
+    font-size: 14px;
+}
+
+.product-change-line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-button {
+    margin-left: 20px;
+    border-radius: 0;
 }

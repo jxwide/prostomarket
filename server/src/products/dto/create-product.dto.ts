@@ -9,4 +9,7 @@ export class CreateProductDto {
 
     @ApiProperty({example: '100000', description: 'Цена товара'})
     readonly price: number;
+
+    @ApiProperty({example: '1', description: 'ID продавца'})
+    readonly ownerId: number;
 }

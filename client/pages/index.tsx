@@ -43,8 +43,6 @@ const Home: NextPage = ({ superCats }) => {
 export default Home;
 
 export async function getServerSideProps(context) {
-    if (!axios.defaults.baseURL) return;
-
     let superCats = [];
 
     await axios({

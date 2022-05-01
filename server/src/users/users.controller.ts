@@ -13,6 +13,7 @@ import { LoginUserDto } from "./dto/login-user.dto";
 import { ValidationPipe } from "../pipes/validation.pipe";
 import { JwtGuard } from "./jwt.guard";
 import { UsersDecorator } from "./users.decorator";
+import { SellerGuard } from "./seller.guard";
 
 @Controller("users")
 export class UsersController {
@@ -44,6 +45,12 @@ export class UsersController {
     @Get("/cart")
     getUserCart(@UsersDecorator("id") userId) {
         return this.usersService.getUserCart(parseInt(userId));
+    }
+
+    @UseGuards(SellerGuard)
+    @Get('/products')
+    getUserProducts(@UsersDecorator('id') id) {
+        return this.usersService.getUserProducts(parseInt(id))
     }
 
     @Get("/users")

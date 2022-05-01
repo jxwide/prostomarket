@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Product } from "./products.model";
 import { CatsService } from "../cats/cats.service";
@@ -13,6 +13,7 @@ import { Op } from "sequelize";
 import { Cat } from "../cats/cats.model";
 import { Image } from "../images/images.model";
 import { Option } from "../options/options.model";
+import { UsersService } from "../users/users.service";
 
 @Injectable()
 export class ProductsService {
@@ -21,10 +22,17 @@ export class ProductsService {
         private catsService: CatsService,
         private optionsService: OptionsService,
         private imageService: ImagesService,
-    ) {}
+        private usersService: UsersService
+    ) {
+    }
 
-    async createProduct(createProductDto: CreateProductDto) {
-        return this.productRepository.create(createProductDto);
+    async createProduct(createProductDto: CreateProductDto, userData) {
+        let product = await this.productRepository.create(createProductDto)
+        console.log(product)
+        if (createProductDto.ownerId) {
+            let result = this.usersService.addProduct(product['dataValues'].id, userData)
+        }
+        return product;
     }
 
     async getAllProductsFromCategory(catName: string) {
@@ -42,16 +50,18 @@ export class ProductsService {
         });
     }
 
-    async addCategoryToProduct(addCategoryDto: AddCategoryDto) {
+    async addCategoryToProduct(addCategoryDto: AddCategoryDto, userId) {
         try {
             let { productId, categoryName } = addCategoryDto;
             const cat = await this.catsService.getCategoryByValue(categoryName);
             const product = await this.productRepository.findOne({
                 where: { id: productId },
+                include: {all: true}
             });
+            if (product['dataValues'].ownerId != userId) return new Error('Нет доступа')
             return product.$add("cats", cat.id);
         } catch (e) {
-            return e.message;
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -68,16 +78,17 @@ export class ProductsService {
         }
     }
 
-    async addImageToProduct(addImageDto: AddImageDto) {
+    async addImageToProduct(addImageDto: AddImageDto, userId) {
         try {
             let { productId, source } = addImageDto;
             const product = await this.productRepository.findOne({
                 where: { id: productId },
             });
+            if (product['dataValues'].ownerId != userId) return new Error('Нет доступа')
             const newImage = await this.imageService.create({ source });
             return product.$add("images", newImage.id);
         } catch (e) {
-            return e.message;
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -101,9 +112,11 @@ export class ProductsService {
                         model: Option,
                         as: "options",
                         where: {
-                            title: options[i].title,
+                            title: {
+                                [Op.iLike]: options[i].title + '%'
+                            },
                             value: {
-                                [Op.like]: options[i].value,
+                                [Op.iLike]: '%' + options[i].value + '%',
                             },
                         },
                     },
@@ -113,13 +126,25 @@ export class ProductsService {
             result = [...result, ...products];
         }
         return result;
+    }
 
-        // let x = await this.productRepository.findAll({
-        //     include: {
-        //         all: true,
-        //     },
-        // });
-        // console.log(x);
-        // return x;
+    async getProductsByTitle(query) {
+        let words = query.split(' ')
+        let products = await this.productRepository.findAll({
+            where: {
+                title: {
+                    [Op.iRegexp]: `${words.join('|')}`
+                }
+            },
+            include: {all: true}
+        })
+
+        // sort by first word
+        products.sort((a, b) => {
+            if (a.title.includes(words[0])) return -1;
+            if (b.title.includes(words[0])) return 1;
+            return 0;
+        })
+        return products
     }
 }

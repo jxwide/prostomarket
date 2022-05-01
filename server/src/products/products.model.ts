@@ -1,7 +1,7 @@
 import {
     BelongsToMany,
     Column,
-    DataType,
+    DataType, ForeignKey,
     HasMany,
     Model,
     Table,
@@ -11,6 +11,7 @@ import { ProductCats } from "../cats/product-cats.model";
 import { ApiProperty } from "@nestjs/swagger";
 import { Image } from "../images/images.model";
 import { Option } from "../options/options.model";
+import { User } from "../users/users.model";
 
 interface ProductCreationAttr {
     title: string;
@@ -58,4 +59,8 @@ export class Product extends Model<Product, ProductCreationAttr> {
     @ApiProperty({ description: "Изображения" })
     @HasMany(() => Image)
     images: [Image];
+
+    @ApiProperty({ description: "Продавец (ID)" })
+    @ForeignKey(() => User)
+    ownerId: number;
 }

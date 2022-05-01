@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { ProductsController } from "./products.controller";
 import { ProductsService } from "./products.service";
 import { SequelizeModule } from "@nestjs/sequelize";
@@ -11,6 +11,8 @@ import { OptionsModule } from "../options/options.module";
 import { ImagesModule } from "../images/images.module";
 import { UsersModule } from "../users/users.module";
 import { CartProd } from "../cart/cart.model";
+import { UsersService } from "../users/users.service";
+import { User } from "../users/users.model";
 
 @Module({
     controllers: [ProductsController],
@@ -22,11 +24,12 @@ import { CartProd } from "../cart/cart.model";
             ProductCats,
             Option,
             CartProd,
+            User
         ]),
         CatsModule,
         OptionsModule,
         ImagesModule,
-        UsersModule,
+        UsersModule
     ],
     exports: [ProductsService],
 })

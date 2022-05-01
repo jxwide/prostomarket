@@ -26,9 +26,11 @@ export class CartProd extends Model<CartProd, CartProdCreationAttr> {
     })
     id: number;
 
+    @ApiProperty({ example: "1", description: "ID товара" })
     @Column({ type: DataType.INTEGER })
     productId: Product;
 
+    @ApiProperty({ example: "1", description: "ID пользователя" })
     @ForeignKey(() => User)
     userId: number;
 }

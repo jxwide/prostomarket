@@ -9,6 +9,8 @@ import { AddCategoryDto } from "../cats/dto/add-category.dto";
 import { AddImageDto } from "../images/dto/add-image.dto";
 import { AdminGuard } from "../users/admin.guard";
 import { JwtGuard } from "../users/jwt.guard";
+import { SellerGuard } from "../users/seller.guard";
+import { UsersDecorator } from "../users/users.decorator";
 
 @ApiTags("Товары")
 @Controller("products")
@@ -29,34 +31,46 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
 
+    @ApiOperation({ summary: "Поиск товаров по категории" })
+    @ApiResponse({ status: 200, type: [Product] })
     @Get("/cat/:name")
     getAllProductsFromCategory(@Param("name") name) {
         return this.productsService.getAllProductsFromCategory(name);
     }
 
+    @ApiOperation({ summary: "Поиск товаров по хар-кам" })
+    @ApiResponse({ status: 200, type: [Product] })
     @Post("/by/options")
     getProductsByOptions(@Body() options) {
         return this.productsService.getProductsByOptions(options);
     }
 
+    @ApiOperation({ summary: "Поиск товаров по названию ( обычный поиск )" })
+    @ApiResponse({ status: 200, type: [Product] })
+    @Get("/q/:query")
+    getProductsByTitle(@Param('query') query) {
+        return this.productsService.getProductsByTitle(query);
+    }
+
     @ApiOperation({ summary: "Создание нового товара" })
     @ApiResponse({ status: 200, type: Product })
-    @UseGuards(AdminGuard)
+    @UseGuards(SellerGuard)
     @Post()
-    createProduct(@Body() createProductDto: CreateProductDto) {
-        return this.productsService.createProduct(createProductDto);
+    createProduct(@Body() createProductDto: CreateProductDto, @UsersDecorator() userData) {
+        return this.productsService.createProduct(createProductDto, userData);
     }
 
     @ApiOperation({ summary: "Добавление новой категории товару" })
-    @UseGuards(JwtGuard)
+    @UseGuards(SellerGuard)
     @Post("/:productId/add/category")
     addCategoryToProduct(
         @Body() addCategoryDto: AddCategoryDto,
         @Param("productId") productId,
+        @UsersDecorator('id') userId
     ) {
         const dto = { ...addCategoryDto, productId };
 
-        return this.productsService.addCategoryToProduct(dto);
+        return this.productsService.addCategoryToProduct(dto, userId);
     }
 
     @ApiOperation({ summary: "Добавление новой хар-ки товару" })
@@ -71,13 +85,14 @@ export class ProductsController {
     }
 
     @ApiOperation({ summary: "Добавление новой картинки к товару" })
-    @UseGuards(JwtGuard)
+    @UseGuards(SellerGuard)
     @Post("/:productId/add/image")
     addImageToProduct(
         @Body() addImageDto: AddImageDto,
         @Param("productId") productId,
+        @UsersDecorator('id') userId
     ) {
         const dto = { ...addImageDto, productId };
-        return this.productsService.addImageToProduct(dto);
+        return this.productsService.addImageToProduct(dto, userId);
     }
 }
