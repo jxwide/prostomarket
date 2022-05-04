@@ -1,13 +1,14 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import cookies from "next-cookies";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 import jwt_decode from "jwt-decode";
-import { removeCookies } from "cookies-next";
+import {removeCookies} from "cookies-next";
 import Link from "next/link";
+import UserInfo from "../../components/userInfo";
 
-const MePage: NextPage = ({ authed, user }) => {
+const MePage: NextPage = ({authed, user}) => {
     let router = useRouter();
 
     useEffect(() => {
@@ -20,16 +21,18 @@ const MePage: NextPage = ({ authed, user }) => {
         <MainLayout>
             <div className="page">
                 <h1>Аккаунт</h1>
-                <h2>{user.email}</h2>
-                <h4>{user.admin ? 'Администратор' : null}</h4>
-                <h4>
+                <span className='info-span'><strong>{user.email}</strong>
+                    {user.admin ?
+                        <Link href='/admin'>
+                            <div className="tag">Администратор</div>
+                        </Link> : null}
                     {user.seller ?
                         <Link href='/seller'>
-                            Продавец
-                        </Link>
-                        : null}
-                </h4>
-                <a href="" onClick={() => removeCookies("jwt")}>
+                            <div className="tag">Продавец</div>
+                        </Link> : null}
+                </span>
+                <UserInfo user={user}/>
+                <a href="" className='margin-top' onClick={() => removeCookies("jwt")}>
                     Выйти
                 </a>
             </div>
@@ -40,7 +43,7 @@ const MePage: NextPage = ({ authed, user }) => {
 export default MePage;
 
 export async function getServerSideProps(context) {
-    const { jwt } = cookies(context);
+    const {jwt} = cookies(context);
     let authed = false;
     let user = {};
 
@@ -50,6 +53,6 @@ export async function getServerSideProps(context) {
     }
 
     return {
-        props: { authed, user },
+        props: {authed, user},
     };
 }

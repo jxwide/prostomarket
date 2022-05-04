@@ -1,16 +1,19 @@
 import Header from "../Header";
 import Banner from "../Banner";
-import axios from "axios";
 import HeaderForSellers from "../HeaderForSellers";
+import {useSelector} from "react-redux";
+import {useEffect} from "react";
+import AlertHeader from "../AlertHeader";
 
-export default function MainLayout({ children, seller }: any) {
-    axios.defaults.baseURL = "http://localhost:5000/";
-
+export default function MainLayout({children, seller}: any) {
     return (
-        <>
-            {seller ? null : <Banner />}
+        <div className='main-layout'>
+            <AlertHeader/>
+            {seller ? null : <Banner/>}
             {seller ? <HeaderForSellers/> : <Header/>}
+
             <main>{children}</main>
-        </>
+
+        </div>
     );
 }

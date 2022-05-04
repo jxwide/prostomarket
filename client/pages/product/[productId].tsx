@@ -1,17 +1,20 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import Option from "../../components/Option";
 import ProductImagesView from "../../components/ProductImagesView";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import cookies from "next-cookies";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
+import {newAlert} from "../../store/alertSlice";
+import {useDispatch} from "react-redux";
 
-const ProductViewPage: NextPage = ({ product, inCart, jwt }) => {
+const ProductViewPage: NextPage = ({product, inCart, jwt}) => {
     let [incart, setIncart] = useState(Boolean(inCart));
     let [catsString, setCatsString] = useState("");
     let [options, setOptions] = useState([]);
     let router = useRouter();
+    let dispatch = useDispatch()
 
     useEffect(() => {
         setCatsString("");
@@ -32,7 +35,10 @@ const ProductViewPage: NextPage = ({ product, inCart, jwt }) => {
             headers: {
                 Authorization: "Bearer " + jwt,
             },
-        }).then(() => setIncart(true));
+        }).then(() => {
+            setIncart(true)
+            dispatch(newAlert({text: 'Товар добавлен в корзину'}))
+        });
     };
 
     return (
@@ -42,7 +48,7 @@ const ProductViewPage: NextPage = ({ product, inCart, jwt }) => {
                 <h2 className="view-product-title">{product.title}</h2>
                 <div className="product-main-block">
                     <div className="product-images-block">
-                        <ProductImagesView images={product.images} />
+                        <ProductImagesView images={product.images}/>
                     </div>
                     <div className="product-options-block">
                         <p className="bold">Коротко о товаре</p>
@@ -113,7 +119,7 @@ export async function getServerSideProps(context) {
     let cart = [];
     let cartProducts = [];
     let inCart = false;
-    let { jwt } = cookies(context);
+    let {jwt} = cookies(context);
 
     let product = await axios({
         url: "/products/" + productId,
@@ -133,6 +139,6 @@ export async function getServerSideProps(context) {
     } else jwt = "";
 
     return {
-        props: { product, inCart, jwt },
+        props: {product, inCart, jwt},
     };
 }

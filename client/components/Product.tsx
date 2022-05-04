@@ -1,12 +1,15 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
+import {newAlert} from "../store/alertSlice";
+import {useDispatch} from "react-redux";
 
-const Product = ({ title, description, price, oldprice, id, images, incart, jwt }) => {
+const Product = ({title, description, price, oldprice, id, images, incart, jwt}) => {
     let [inCart, setInCart] = useState(false);
     let router = useRouter();
     useEffect(() => setInCart(incart), [incart]);
+    let dispatch = useDispatch()
 
     let preview_image = "none_image";
     if (images.length) preview_image = images[0].source;
@@ -19,7 +22,10 @@ const Product = ({ title, description, price, oldprice, id, images, incart, jwt 
             headers: {
                 Authorization: "Bearer " + jwt,
             },
-        }).then(() => setInCart(true));
+        }).then(() => {
+            setInCart(true)
+            dispatch(newAlert({text: 'Товар добавлен в корзину'}))
+        });
     };
 
     return (

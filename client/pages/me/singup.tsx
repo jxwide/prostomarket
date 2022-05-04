@@ -1,17 +1,20 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import cookies from "next-cookies";
 import Link from "next/link";
-import { useState } from "react";
+import {useState} from "react";
 import axios from "axios";
-import { setCookies } from "cookies-next";
-import { useRouter } from "next/router";
+import {setCookies} from "cookies-next";
+import {useRouter} from "next/router";
+import {newAlert} from "../../store/alertSlice";
+import {useDispatch} from "react-redux";
 
-const SingupPage: NextPage = ({ authed }) => {
+const SingupPage: NextPage = ({authed}) => {
     let [email, setEmail] = useState("");
     let [pass, setPass] = useState("");
     let [pass2, setPass2] = useState("");
     let [errorMsg, setErrorMsg] = useState("");
+    let dispatch = useDispatch()
     let router = useRouter();
 
     let nextButton = async () => {
@@ -26,19 +29,22 @@ const SingupPage: NextPage = ({ authed }) => {
             data: payload,
         })
             .then((response) => {
-                setCookies("jwt", response.data, { maxAge: 60 * 60 * 24 });
+                setCookies("jwt", response.data, {maxAge: 60 * 60 * 24});
+                dispatch(newAlert({text: 'Вы успешно авторизовались'}))
                 router.push("/me");
             })
             .catch((e) => {
                 let errors = e.response.data;
-                let errorsString = "";
-                errors.map((el) => {
-                    if (typeof el != "string") {
-                        errorsString += el.join("!");
-                    } else errorsString += el;
-                });
-                let errorsArray = errorsString.split("!");
-                setErrorMsg(errorsArray[0]);
+                let errorsArray = []
+                let errorMessage = ''
+                if (errors.length != undefined) {
+                    for (let i = 0; i < errors.length; i++) {
+                        errorsArray.push(...errors[i])
+                    }
+                    errorMessage = errorsArray[0]
+                } else errorMessage = errors.message
+
+                dispatch(newAlert({text: errorMessage}))
             });
 
         setEmail("");
@@ -93,12 +99,12 @@ const SingupPage: NextPage = ({ authed }) => {
 export default SingupPage;
 
 export async function getServerSideProps(context) {
-    const { jwt } = cookies(context);
+    const {jwt} = cookies(context);
     let authed = false;
 
     if (jwt) authed = true;
 
     return {
-        props: { authed },
+        props: {authed},
     };
 }

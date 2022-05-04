@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import SearchInput from "./SearchInput";
 import Image from "next/image";
 import image_orders from "../public/orders.svg";
@@ -33,7 +33,7 @@ const Header = () => {
                 </div>
 
                 <div className="block search-input-block">
-                    <SearchInput />
+                    <SearchInput/>
                 </div>
 
                 <div className="block">
