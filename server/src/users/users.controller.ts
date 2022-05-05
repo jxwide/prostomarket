@@ -7,17 +7,18 @@ import {
     UseGuards,
     UsePipes,
 } from "@nestjs/common";
-import { UsersService } from "./users.service";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { LoginUserDto } from "./dto/login-user.dto";
-import { ValidationPipe } from "../pipes/validation.pipe";
-import { JwtGuard } from "./jwt.guard";
-import { UsersDecorator } from "./users.decorator";
-import { SellerGuard } from "./seller.guard";
+import {UsersService} from "./users.service";
+import {CreateUserDto} from "./dto/create-user.dto";
+import {LoginUserDto} from "./dto/login-user.dto";
+import {ValidationPipe} from "../pipes/validation.pipe";
+import {JwtGuard} from "./jwt.guard";
+import {UsersDecorator} from "./users.decorator";
+import {SellerGuard} from "./seller.guard";
 
 @Controller("users")
 export class UsersController {
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService) {
+    }
 
     @UsePipes(ValidationPipe)
     @Post("/auth/singup")
@@ -38,7 +39,7 @@ export class UsersController {
         @Param("productId") productId,
     ) {
         if (!userId || !productId) return false;
-        return this.usersService.addProductToCart({ productId, userId });
+        return this.usersService.addProductToCart({productId, userId});
     }
 
     @UseGuards(JwtGuard)
@@ -51,6 +52,11 @@ export class UsersController {
     @Get('/products')
     getUserProducts(@UsersDecorator('id') id) {
         return this.usersService.getUserProducts(parseInt(id))
+    }
+
+    @Get('/name/:email')
+    getUserNameByEmail(@Param('email') email) {
+        return this.usersService.getUserNameByEmail(email)
     }
 
     @Get("/users")

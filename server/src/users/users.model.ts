@@ -7,6 +7,7 @@ interface UserCreationAttr {
     email: string;
     username: string;
     password: string;
+    name: string;
 }
 
 @Table({tableName: "users"})
