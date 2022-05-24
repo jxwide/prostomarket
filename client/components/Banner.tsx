@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import {IBanner} from '../models/IBanner';
 
 const Banner = () => {
-    let [banner, setBanner] = useState({ image: "", href: "" });
+    let [banner, setBanner] = useState<IBanner>();
 
     useEffect(() => {
         axios({
@@ -20,9 +21,9 @@ const Banner = () => {
 
     return (
         <div className="banner">
-            <Link href={banner.href}>
+            <Link href={banner?.href || '/'}>
                 <Image
-                    src={banner.image || "/green.png"}
+                    src={banner?.image || "/green.png"}
                     width="1920px"
                     height="52px"
                 />

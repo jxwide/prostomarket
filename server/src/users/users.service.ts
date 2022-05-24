@@ -1,20 +1,24 @@
 import {
     forwardRef,
     HttpException,
-    HttpStatus, Inject,
-    Injectable, Param,
+    HttpStatus,
+    Inject,
+    Injectable,
+    Param,
     UnauthorizedException,
 } from "@nestjs/common";
-import {InjectModel} from "@nestjs/sequelize";
-import {User} from "./users.model";
-import {CreateUserDto} from "./dto/create-user.dto";
+import { InjectModel } from "@nestjs/sequelize";
+import { User } from "./users.model";
+import { CreateUserDto } from "./dto/create-user.dto";
 import * as bcrypt from "bcrypt";
-import {JwtService} from "@nestjs/jwt";
-import {LoginUserDto} from "./dto/login-user.dto";
-import {AddProductToCartDto} from "./dto/add-product-to-cart.dto";
-import {CartService} from "../cart/cart.service";
-import {ProductsService} from "../products/products.service";
-import {UsersDecorator} from "./users.decorator";
+import { JwtService } from "@nestjs/jwt";
+import { LoginUserDto } from "./dto/login-user.dto";
+import { AddProductToCartDto } from "./dto/add-product-to-cart.dto";
+import { CartService } from "../cart/cart.service";
+import { ProductsService } from "../products/products.service";
+import { UsersDecorator } from "./users.decorator";
+import { UpdateUserInfoDto } from "./dto/update-user-info.dto";
+import { CartProd } from "src/cart/cart.model";
 
 @Injectable()
 export class UsersService {
@@ -22,14 +26,13 @@ export class UsersService {
         @InjectModel(User) private userRepository: typeof User,
         private jwtService: JwtService,
         private cartService: CartService,
-    ) {
-    }
+    ) {}
 
-    async registration(createUserDto: CreateUserDto) {
+    async registration(createUserDto: CreateUserDto): Promise<string> {
         try {
-            let {password} = createUserDto;
+            let { password } = createUserDto;
             const hash = await bcrypt.hash(password, 3);
-            let payload = {...createUserDto, password: hash};
+            let payload = { ...createUserDto, password: hash };
             const user = await this.userRepository.create(payload);
             return this.jwtService.sign(user["dataValues"]);
         } catch (e) {
@@ -37,10 +40,10 @@ export class UsersService {
         }
     }
 
-    async login(loginUserDto: LoginUserDto) {
+    async login(loginUserDto: LoginUserDto): Promise<string> {
         try {
-            let {password, email} = loginUserDto;
-            let user = await this.userRepository.findOne({where: {email}});
+            let { password, email } = loginUserDto;
+            let user = await this.userRepository.findOne({ where: { email } });
             let passwordHashed = user["dataValues"].password;
             const isMatch = await bcrypt.compare(password, passwordHashed);
             if (isMatch) {
@@ -55,11 +58,11 @@ export class UsersService {
 
     async addProductToCart(addProductToCartDto: AddProductToCartDto) {
         try {
-            let {productId} = addProductToCartDto;
+            let { productId } = addProductToCartDto;
             let cartProd = await this.cartService.create(productId);
 
             let user = await this.userRepository.findOne({
-                where: {id: addProductToCartDto.userId},
+                where: { id: addProductToCartDto.userId },
             });
             return user.$add("cart", cartProd.id);
         } catch (e) {
@@ -67,11 +70,11 @@ export class UsersService {
         }
     }
 
-    async getUserCart(id: number) {
+    async getUserCart(id: number): Promise<CartProd[] | unknown[]> {
         try {
             const user = await this.userRepository.findOne({
-                where: {id},
-                include: {all: true},
+                where: { id },
+                include: { all: true },
             });
             return user["dataValues"].cart;
         } catch (e) {
@@ -80,31 +83,62 @@ export class UsersService {
     }
 
     async getUserById(id: number) {
-        return this.userRepository.findOne({where: {id}, include: {all: true}});
+        return this.userRepository.findOne({
+            where: { id },
+            include: { all: true },
+        });
     }
 
     async addProduct(productId: number, userData) {
         if (!productId || !userData.seller) return;
-        let user = await this.userRepository.findOne({where: {id: userData.id}, include: {all: true}});
+        let user = await this.userRepository.findOne({
+            where: { id: userData.id },
+            include: { all: true },
+        });
         return user.$add("products", productId);
     }
 
-
     async getUserProducts(id: number) {
-        let user = await this.userRepository.findOne({where: {id}, include: {all: true}});
-        return user['dataValues'].products
+        let user = await this.userRepository.findOne({
+            where: { id },
+            include: { all: true },
+        });
+        return user["dataValues"].products;
     }
 
     async test() {
-        return this.userRepository.findAll({include: {all: true}});
+        return this.userRepository.findAll({ include: { all: true } });
     }
 
-    async getUserNameByEmail(email) {
+    async getUserNameByEmail(email: string) {
         try {
-            let user = await this.userRepository.findOne({where: {email}})
-            return user['dataValues'].name
+            let user = await this.userRepository.findOne({ where: { email } });
+            return user["dataValues"].name;
         } catch (e) {
-            throw new HttpException('Аккаунт не найден', HttpStatus.BAD_REQUEST)
+            throw new HttpException(
+                "Аккаунт не найден",
+                HttpStatus.BAD_REQUEST,
+            );
         }
+    }
+
+    async updateUserInfo(userId: number, updateUserInfoDto: UpdateUserInfoDto) {
+        try {
+            return this.userRepository.update(
+                { ...updateUserInfoDto },
+                { where: { id: userId } },
+            );
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    async getUserInfo(userId: number) {
+        let user = await this.userRepository.findOne({ where: { id: userId } });
+        return {
+            name: user["dataValues"].name,
+            city: user["dataValues"].city,
+            address: user["dataValues"].address,
+        };
     }
 }

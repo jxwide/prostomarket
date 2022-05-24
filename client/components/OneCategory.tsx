@@ -2,7 +2,13 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 
-const OneCategory = ({ href, image, name }) => {
+interface OneCategoryProps {
+    href: string,
+    image: string,
+    name: string,
+}
+
+const OneCategory: React.FC<OneCategoryProps> = ({href, image, name}) => {
     return (
         <Link href={href || "/"}>
             <div className="index-category">

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import { IBanner } from '../models/IBanner';
 
 const MiniBanners = () => {
-    let [banners, setBanners] = useState([]);
+    let [banners, setBanners] = useState<IBanner[]>([]);
 
     useEffect(() => {
         axios({

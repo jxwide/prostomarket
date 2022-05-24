@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import MainLayout from "../components/layouts/MainLayout";
 import BigBanner from "../components/BigBanner";
 import MiniBanners from "../components/MiniBanners";
@@ -6,17 +6,17 @@ import RightBanners from "../components/RightBanners";
 import axios from "axios";
 import OneCategory from "../components/OneCategory";
 
-const Home: NextPage = ({ superCats }) => {
+const Home: NextPage = ({superCats}) => {
     return (
         <MainLayout>
             <div className="page">
                 <div className="big-banner">
-                    <BigBanner />
+                    <BigBanner/>
                 </div>
                 <div className="main-page">
                     <div className="main-page-main">
                         <div className="mini-banners">
-                            <MiniBanners />
+                            <MiniBanners/>
                         </div>
 
                         <h1 className="margin-top">Категории</h1>
@@ -32,7 +32,7 @@ const Home: NextPage = ({ superCats }) => {
                         </div>
                     </div>
                     <div className="main-page-banners">
-                        <RightBanners />
+                        <RightBanners/>
                     </div>
                 </div>
             </div>
@@ -62,6 +62,6 @@ export async function getServerSideProps(context) {
     let shuffledCats = superCats.slice(0, 4);
 
     return {
-        props: { superCats },
+        props: {superCats},
     };
 }

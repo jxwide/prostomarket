@@ -1,7 +1,12 @@
 import Link from "next/link";
 import React from "react";
 
-const Category = ({ name, href }) => {
+interface CategoryProps {
+    name: string,
+    href: string,
+}
+
+const Category: React.FC<CategoryProps> = ({name, href}) => {
     return (
         <div className="category">
             <Link href={href}>

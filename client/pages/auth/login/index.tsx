@@ -52,7 +52,7 @@ const LoginPage: NextPage = ({authed}) => {
 
 export default LoginPage;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: any) {
     const {jwt} = cookies(context);
     let authed = false;
 

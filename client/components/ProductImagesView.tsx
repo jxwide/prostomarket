@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-const ProductImagesView = ({ images }) => {
+interface ProductImagesViewProps {
+    images: object
+}
+
+const ProductImagesView: React.FC<ProductImagesViewProps> = ({images}) => {
     let [choosedPhoto, setChoosedPhoto] = useState("");
     let [allImages, setAllImages] = useState([]);
 
@@ -28,7 +32,7 @@ const ProductImagesView = ({ images }) => {
                 ))}
             </div>
             <div className="images-view-view">
-                <img src={choosedPhoto} alt="" className="view-choosed-photo" />
+                <img src={choosedPhoto} alt="" className="view-choosed-photo"/>
             </div>
         </>
     );

@@ -13,8 +13,6 @@ const MePage: NextPage = ({authed, user}) => {
 
     useEffect(() => {
         if (!authed) router.push("/me/singup");
-
-        console.log('us', user)
     }, [authed]);
 
     return (

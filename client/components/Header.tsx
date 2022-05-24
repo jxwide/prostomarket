@@ -49,7 +49,7 @@ const Header = () => {
                             </div>
                         </Link>
                         <Link href="/me/favorite">
-                            <div className="nav-link-w-image">
+                            <div className="nav-link-w-image no-mobile-icon">
                                 <Image
                                     src={image_favorite}
                                     width="20px"

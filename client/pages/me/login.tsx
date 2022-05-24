@@ -2,7 +2,7 @@ import type {NextPage} from "next";
 import MainLayout from "../../components/layouts/MainLayout";
 import cookies from "next-cookies";
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {setCookies} from "cookies-next";
 import {useRouter} from "next/router";
@@ -10,10 +10,16 @@ import {newAlert} from "../../store/alertSlice";
 import {useDispatch} from "react-redux";
 
 const LoginPage: NextPage = ({authed}) => {
+
+    // redirect to new auth page
+    let router = useRouter();
+    useEffect(() => {
+        router.push('/auth/login')
+    })
+
     let [email, setEmail] = useState("");
     let [pass, setPass] = useState("");
     let [errorMsg, setErrorMsg] = useState("");
-    let router = useRouter();
     let dispatch = useDispatch()
 
     let nextButton = async () => {

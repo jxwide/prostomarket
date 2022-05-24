@@ -5,7 +5,18 @@ import {useRouter} from "next/router";
 import {newAlert} from "../store/alertSlice";
 import {useDispatch} from "react-redux";
 
-const Product = ({title, description, price, oldprice, id, images, incart, jwt}) => {
+interface ProductProps {
+    title: string,
+    description: string,
+    price: number,
+    oldprice: number,
+    id: number,
+    images: object,
+    incart: boolean,
+    jwt: string
+}
+
+const Product: React.FC<ProductProps> = ({title, description, price, oldprice, id, images, incart, jwt}) => {
     let [inCart, setInCart] = useState(false);
     let router = useRouter();
     useEffect(() => setInCart(incart), [incart]);

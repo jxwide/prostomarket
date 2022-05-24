@@ -33,6 +33,7 @@ const Header = () => {
                         <Link href="/me">
                             <div className="nav-link-w-image">
                                 <Image
+                                    alt=""
                                     src={image_my}
                                     width="20px"
                                     height="20px"

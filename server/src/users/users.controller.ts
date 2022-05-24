@@ -14,6 +14,7 @@ import {ValidationPipe} from "../pipes/validation.pipe";
 import {JwtGuard} from "./jwt.guard";
 import {UsersDecorator} from "./users.decorator";
 import {SellerGuard} from "./seller.guard";
+import {UpdateUserInfoDto} from "./dto/update-user-info.dto";
 
 @Controller("users")
 export class UsersController {
@@ -57,6 +58,18 @@ export class UsersController {
     @Get('/name/:email')
     getUserNameByEmail(@Param('email') email) {
         return this.usersService.getUserNameByEmail(email)
+    }
+
+    @UseGuards(JwtGuard)
+    @Post('/update/info')
+    updateUserInfo(@UsersDecorator('id') userId, @Body() updateUserInfoDto: UpdateUserInfoDto) {
+        return this.usersService.updateUserInfo(userId, updateUserInfoDto)
+    }
+
+    @UseGuards(JwtGuard)
+    @Get('/info')
+    getUserInfo(@UsersDecorator('id') userId) {
+        return this.usersService.getUserInfo(userId)
     }
 
     @Get("/users")
