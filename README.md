@@ -18,7 +18,7 @@ client (nextJS)
     npm i
     cd ..
 ```
-server (nextJS)
+server (nestJS)
 ```bash 
     cd server
     npm i
@@ -31,7 +31,7 @@ client (nextJS)
     cd client
     npm run dev
 ```
-server (nextJS)
+server (nestJS)
 ```bash 
     cd server
     npm run start:dev
